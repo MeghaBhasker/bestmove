@@ -143,7 +143,6 @@ function Board({board,onMove,disabled,lastMove,flashSq,flashType,userSide="w",si
   const[dots,setDots]=useState([]);
   useEffect(()=>{setSel(null);setDots([]);},[board,disabled]);
   const mine=useCallback((piece)=>{if(!piece)return false;return userSide==="w"?piece===piece.toUpperCase():piece===piece.toLowerCase();},[userSide]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleClick=useCallback((sq)=>{
     if(disabled)return;
     const piece=board[sq];
@@ -152,6 +151,7 @@ function Board({board,onMove,disabled,lastMove,flashSq,flashType,userSide="w",si
     if(mine(piece)){setSel(sq);setDots(getLegalMoves(board,sq));return;}
     if(dots.includes(sq)){setSel(null);setDots([]);onMove&&onMove(sel+sq);}
     else{setSel(null);setDots([]);}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[disabled,sel,board,onMove,mine,dots]);
   return(
     <div style={{display:"inline-block",borderRadius:4,overflow:"hidden",boxShadow:"0 4px 24px rgba(0,0,0,0.6)",border:"2px solid #111"}}>
@@ -654,6 +654,7 @@ export default function BestMove(){
       },700);
       return()=>clearTimeout(t);
     }else{setTimeout(()=>setPhase("waiting"),400);}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[posIdx,positions]);
 
   const handleMove=useCallback(async(uci)=>{
@@ -685,6 +686,7 @@ export default function BestMove(){
         setTimeout(()=>{const b=pos.setupMove?applyMove(parseFen(pos.fen),pos.setupMove.slice(0,2),pos.setupMove.slice(2,4)):parseFen(pos.fen);setBoard(b);setLastMove(pos.setupMove?{from:pos.setupMove.slice(0,2),to:pos.setupMove.slice(2,4)}:null);},1200);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[phase,pos,attempts]);
 
   function tryAgain(){const b=pos.setupMove?applyMove(parseFen(pos.fen),pos.setupMove.slice(0,2),pos.setupMove.slice(2,4)):parseFen(pos.fen);setBoard(b);setLastMove(pos.setupMove?{from:pos.setupMove.slice(0,2),to:pos.setupMove.slice(2,4)}:null);setPhase("waiting");}
